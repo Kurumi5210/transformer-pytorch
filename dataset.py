@@ -2,6 +2,10 @@ import torch
 import torch.nn as nn
 from torch.utils.data import Dataset
 
+def causal_mask(size):  # 返回所有对角线以下的值
+    mask = torch.triu(torch.ones(1, size, size), diagonal=1).dtype(torch.int)
+    return mask == 0 
+
 class BilingualDataset(Dataset):
     def __init__(self, ds, tokenizer_src, tokenizer_tgt, src_lang, tgt_lang, seq_len)->None:
         super().__init__()
@@ -74,6 +78,3 @@ class BilingualDataset(Dataset):
             "tgt_text": tgt_text,
         }
     
-def causal_mask(size):  # 返回所有对角线以下的值
-    mask = torch.triu(torch.ones(1, size, size), diagonal=1).dtype(torch.int)
-    return mask == 0 
