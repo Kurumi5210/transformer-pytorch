@@ -53,7 +53,7 @@ class FeedFordwardBlock(nn.Module):
         self.dropout =  nn.Dropout(dropout)
         self.linear_2 = nn.Linear(d_ff, d_model)
     def forward(self, x):
-        return self.linear_2(self.dorpout(torch.relu(self.linear_1(x))))
+        return self.linear_2(self.dropout(torch.relu(self.linear_1(x))))
 
 class MultiHeadAttentionBlock(nn.Module):
     def __init__(self, d_model:int, h: int, dropout: float) -> None:
@@ -85,13 +85,13 @@ class MultiHeadAttentionBlock(nn.Module):
         return (attention_scores@value), attention_scores
 
     def forward(self, q, k, v, mask):
-        query = self.wq(q)
+        query = self.w_q(q)
         key = self.w_k(k)
         value = self.w_v(v)
         # (batch, seq_len, d_model) -> (batch, seq_len, h, d_k) -> (batch, h, seq_len, d_k)
         query = query.view(query.shape[0], query.shape[1], self.h, self.d_k).transpose(1, 2)
-        key = key.view(query.shape[0], query.shape[1], self.h, self.d_k).transpose(1, 2)
-        value = value.view(query.shape[0], query.shape[1], self.h, self.d_k).transpose(1, 2)
+        key = key.view(key.shape[0], key.shape[1], self.h, self.d_k).transpose(1, 2)
+        value = value.view(value.shape[0], value.shape[1], self.h, self.d_k).transpose(1, 2)
 
         x, self.attention_scores = MultiHeadAttentionBlock.attention(query, key, value, mask, self.dropout)
 
@@ -163,7 +163,7 @@ class Decoder(nn.Module):
     def forward(self, x, encoder_output, src_mask, tgt_mask):
         for layer in self.layers:
             x = layer(x, encoder_output, src_mask, tgt_mask)
-        return self.norn(x)
+        return self.norm(x)
     
 class ProjectionLayer(nn.Module):
     def __init__(self, d_model:int, vocab_size:int) -> None:
@@ -187,17 +187,17 @@ class Transformer(nn.Module):
         self.tgt_pos = tgt_pos
         self.projection_layer = projection_layer
 
-    def encoder(self, src, src_mask):
+    def encode(self, src, src_mask):
         src = self.src_embed(src)
         src = self.src_pos(src)
         return self.encoder(src, src_mask)
 
-    def decoder(self, encoder_output, src_mask, tgt, tgt_mask):
+    def decode(self, encoder_output, src_mask, tgt, tgt_mask):
         tgt = self.tgt_embed(tgt)
         tgt = self.tgt_pos(tgt)
-        return self.decoder(tgt, encoder_output, src_mask, tgt, tgt_mask)
+        return self.decoder(tgt, encoder_output, src_mask, tgt_mask)
 
-    def projectr(self, x):
+    def project(self, x):
         return self.projection_layer(x)
 
 def build_Transformer(src_vocab_size: int, tgt_vocab_size:int, src_seq_len:int, tgt_seq_len:int,

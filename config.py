@@ -1,14 +1,14 @@
 from pathlib import Path
 
 def get_config():
-    {
-        "batch_size":8,
+    return {
+        "batch_size":32,
         "num_epochs":20,
         "lr":1e-4,
         "seq_len":512,
         "d_model":512,
         "lang_src":"en",
-        "lang_tgt":"ch",
+        "lang_tgt":"ru",
         "model_folder": "weights",
         "model_basename":"transformer_model_",
         "preload": None,

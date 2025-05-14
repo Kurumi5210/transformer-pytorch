@@ -3,7 +3,7 @@ import torch.nn as nn
 from torch.utils.data import Dataset
 
 def causal_mask(size):  # 返回所有对角线以下的值
-    mask = torch.triu(torch.ones(1, size, size), diagonal=1).dtype(torch.int)
+    mask = torch.triu(torch.ones(1, size, size), diagonal=1).type(torch.int)
     return mask == 0 
 
 class BuildDataset(Dataset):
@@ -17,9 +17,9 @@ class BuildDataset(Dataset):
         self.tgt_lang = tgt_lang
         self.seq_len = seq_len
 
-        self.sos_toeken = torch.Tensor([tokenizer_src.token_to_id(['[SOS]'])],dtype=torch.int64)
-        self.eos_toeken = torch.Tensor([tokenizer_src.token_to_id(['[EOS]'])],dtype=torch.int64)
-        self.pad_toeken = torch.Tensor([tokenizer_src.token_to_id(['[PAD]'])],dtype=torch.int64)
+        self.sos_toeken = torch.tensor([tokenizer_src.token_to_id('[SOS]')],dtype=torch.int64)
+        self.eos_toeken = torch.tensor([tokenizer_src.token_to_id('[EOS]')],dtype=torch.int64)
+        self.pad_toeken = torch.tensor([tokenizer_src.token_to_id('[PAD]')],dtype=torch.int64)
 
     def __len__(self):
         return len(self.ds)
@@ -30,7 +30,7 @@ class BuildDataset(Dataset):
         tgt_text = src_target_pair['translation'][self.tgt_lang]
 
         enc_input_tokens = self.tokenizer_src.encode(src_text).ids
-        dec_input_tokens = self.tokenizer_src.decode(tgt_text).ids
+        dec_input_tokens = self.tokenizer_src.encode(tgt_text).ids
 
         enc_num_padding_tokens = self.seq_len - len(enc_input_tokens) - 2
         dec_num_padding_tokens = self.seq_len - len(dec_input_tokens) - 1   # decode补开头 label补结束
