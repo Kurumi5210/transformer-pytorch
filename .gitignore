@@ -14,8 +14,10 @@
 utils/*.py
 utils/**/*.py
 
-# 不忽略名为 "config" 的目录中的 JSON 文件
-config/*.json
+# 不忽略 JSON 文件
+!.json
+!.txt
+!.ipynb
 
 # 忽略名为 "data" 的目录及其所有子目录
 data/
