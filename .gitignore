@@ -1,23 +1,54 @@
-# 忽略所有文件和目录
-*
+# ================
+# 系统/IDE文件
+# ================
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.bak
+*~
 
-# 不忽略 Python 代码文件
-!.py
+# ================
+# Python编译文件
+# ================
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
 
-# 不忽略 JSON 文件
-!.json
+# ================
+# 模型&训练输出
+# ================
+# 模型权重文件
+*.pt
+*.pth
+*.bin
+*.onnx
+*.trt
 
-# 不忽略.gitignore 文件本身
-!.gitignore
+# 训练相关目录
+weights/
+checkpoints/
+logs/
+runs/
+output/
+results/
 
-# 不忽略名为 "utils" 的目录及其子目录中的 Python 文件
-utils/*.py
-utils/**/*.py
+# ================
+# 数据集&压缩包
+# ================
+data/  # 原始数据目录
+*.zip
+*.tar.gz
+*.h5
+*.npz
 
-# 不忽略 JSON 文件
-!.json
-!.txt
-!.ipynb
-
-# 忽略名为 "data" 的目录及其所有子目录
-data/
+# ================
+# 环境相关
+# ================
+.env
+venv/
+env/
+*.env
