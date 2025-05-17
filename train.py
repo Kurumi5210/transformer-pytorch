@@ -106,6 +106,9 @@ def get_dataset(config):
     train_ds_size = int(0.9*len(ds_raw))
     val_ds_size = len(ds_raw) - train_ds_size
     train_ds_raw, val_ds_raw = random_split(ds_raw, [train_ds_size, val_ds_size])
+    print(train_ds_raw)
+    for i in range(len(train_ds_raw[0])):
+        print(train_ds_raw[i])
     train_ds = BuildDataset(train_ds_raw, tokenizer_src, tokenizer_tgt, config['lang_src'], config['lang_tgt'], config['seq_len'])
     val_ds = BuildDataset(val_ds_raw, tokenizer_src, tokenizer_tgt, config['lang_src'], config['lang_tgt'], config['seq_len'])
 

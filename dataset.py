@@ -11,6 +11,8 @@ class BuildDataset(Dataset):
         super().__init__()
 
         self.ds = ds
+        print(ds)
+        assert(0)
         self.tokenizer_src = tokenizer_src
         self.tokenizer_tgt = tokenizer_tgt
         self.src_lang = src_lang
